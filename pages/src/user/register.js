@@ -20,8 +20,8 @@ import { useSession, signIn, signOut, getSession } from "next-auth/react"
 
 import { parseCookies } from "nookies"
 import { useRouter } from "next/router"
-
-export default function register() {
+import { GoogleLoginButton } from "react-social-login-buttons"
+export default function Register() {
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -31,16 +31,18 @@ export default function register() {
     const router = useRouter()
   
     const { data: session } = useSession()
-    console.log(session, "session")
+    console.log(session.user, "session in register PAGE")  // well show current user information
+
   
     const cookies = parseCookies
 
-    console.log(cookies, "---->cookies",)
+    console.log({cookies}, "---->cookies",)
   
     useEffect(() => {
       if (session) {
-        toast.success("Login Success")
-        router.push("/")
+        toast.success("Login Success push me to Home page route")
+        
+       // router.push("/")
       }
   
       if (cookies?.user) {
@@ -49,16 +51,184 @@ export default function register() {
     }, [router])
 
 
+    const SubmitHandler = async (e) => {
+        e.preventDefault()
+    
+        try {
+          if (password !== conPassword) {
+            toast.error("passwords do not match!")
+            // console.log("passwords do not match")
+            return
+          }
+    
+          const user = cookies?.user
+            ? JSON.parse(cookies.user)
+            : session?.user
+            ? session?.user
+            : ""
+    
+          console.log(email, password, firstName, lastName)
+    
+          const config = {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+    
+          const { data } = await axios.post(
+            `/api/user/register`,
+            { email, password, firstName, lastName },
+            config
+          )
+    
+          toast.success(data?.message)
+        } catch (error) {
+          console.log(error.response)
+          toast.error(error.response.data.error)
+        }
+      }
+
+
+
+
 
   return (
-    <div>
+    <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign up
+          </Typography>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={SubmitHandler}
+            sx={{ mt: 3 }}
+          >
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  autoComplete="given-name"
+                  name="firstName"
+                  required
+                  fullWidth
+                  id="firstName"
+                  label="First Name"
+                  autoFocus
+                  value={firstName}
+                  onChange={(e) => setFirstName(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  required
+                  fullWidth
+                  id="lastName"
+                  label="Last Name"
+                  name="lastName"
+                  autoComplete="family-name"
+                  value={lastName}
+                  onChange={(e) => setLastName(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="new-password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  name="confirm password"
+                  label="Confirm Password"
+                  type="password"
+                  id="confirm password"
+                  autoComplete="current-password"
+                  value={conPassword}
+                  onChange={(e) => setConPassword(e.target.value)}
+                />
+              </Grid>
+            </Grid>
+            <Grid
+              container
+              sx={{
+                mt: 2,
+                mb: 2,
+                border: 1,
+                borderRadius: 1,
+                borderColor: "grey.400",
+              }}
+            >
+              <GoogleLoginButton onClick={() => signIn("google")} />
+            </Grid>
 
-<h1>Register page</h1>
-
-
-    </div>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 2, mb: 2, backgroundColor: "secondary.main" }}
+            >
+              Sign Up
+            </Button>
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                <Link href="#" variant="body2">
+                  Already have an account? Sign in
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+      </Container>
   )
 }
+
+
+
+export async function getServerSideProps(context) {
+    const session = await getSession(context)
+  
+    return {
+      props: {
+        session,
+      },
+    }
+  }
+
+
+
 
 
 // --------- session console Data -------------

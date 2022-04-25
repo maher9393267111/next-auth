@@ -4,10 +4,14 @@ import styles from '../styles/Home.module.css'
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
 
+// import connectDB from '../util/connectDb';
+
+// connectDB();
+
 export default function Home() {
 
 	const { data: session } = useSession()
-	console.log(session)
+	console.log('home page ------->',session)
 	if (session) {
 	  return (
 		<>

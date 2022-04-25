@@ -12,7 +12,7 @@ export default function Home() {
 	  return (
 		<>
 		  <h1>Home signOut</h1>
-		  Signed in as {session.user.email} <br />
+		  Signed in ass {session.user.email} <br />
 		  <button onClick={() => signOut()}>Sign out</button>
 		</>
 	  )

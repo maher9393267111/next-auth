@@ -1,38 +1,10 @@
 // import NextAuth from "next-auth";
 // import GoogleProvider from "next-auth/providers/google";
-// import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
+ import { MongoDBAdapter } from "@next-auth/mongodb-adapter";
 // import clientPromise from "../../../util/mongodb";
-// //import clientPromise from "../../../util/mongo2";
+import clientPromise from "../../../util/mongo2";
 
 
-// export default NextAuth({
-//   // Configure one or more authentication providers
-//   providers: [
-//     GoogleProvider({
-//       clientId:   process.env.GOOGLE_CLIENT_ID,
-   
-     
-//       clientSecret:   process.env.GOOGLE_CLIENT_SECRET,
-    
-//     }),
-//   ],
-//   secret:process.env.JWT_SECRET,
-
- 
-
-
-//   adapter: MongoDBAdapter(clientPromise),
-//   pages: {
-//     signIn: "/home",
-//   },
-//   session: {
-//     strategy: "jwt",
-//   },
-// });
-
-
-
-//----------------------------------------------------------------------------------------------------------------------
 
 import NextAuth from "next-auth"
 //import Providers from "next-auth/providers"

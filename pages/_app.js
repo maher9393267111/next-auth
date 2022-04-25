@@ -4,15 +4,20 @@ import React from 'react'
 import { Head } from 'next/document';
 import { Provider } from 'next-auth/react'
 
-export default function App({ Component, pageProps }) {
+export default function App({ Component, pageProps: { session, ...pageProps }  }) {
 	return (
-	  <Provider>
+
 	
 		
-		<div className="container">
+		<SessionProvider session={session}>
+			<div>
+				
+		
 		  <Component {...pageProps} />
-		</div>
-	  </Provider>
+
+		  </div>
+		</SessionProvider>
+	
 	)
   }
 

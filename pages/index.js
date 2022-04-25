@@ -1,28 +1,31 @@
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import { useSession } from "next-auth/react";
+import { useSession, signIn, signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
 
 export default function Home() {
 
-  const {data: session} = useSession();
-	 console.log('index page----->',session);
-	if(session) {
-		const {user} = session;
-		 console.log(user.name);
+	const { data: session } = useSession()
+	console.log(session)
+	if (session) {
+	  return (
+		<>
+		  <h1>Home signOut</h1>
+		  Signed in as {session.user.email} <br />
+		  <button onClick={() => signOut()}>Sign out</button>
+		</>
+	  )
 	}
+	return (
+	  <>
+		<h1>Home signIn</h1>
+		Not signed in <br />
+		<button onClick={() => signIn("google")}>Sign in</button>
+	  </>
+	)
 
 
 
-  return (
 
-<div>
-  
-Main Page here
-
-</div>
-
-
-  )
 }

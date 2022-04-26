@@ -15,10 +15,10 @@ const userSchema = mongoose.Schema({
   password: {
     type: String,
   },
-  resetToken: { type: String },
+  resetToken: { type: String },  // whenn user forget password
   update: { type: String },
   validEmail: { type: String, default: "not" },
-  emailToken: { type: String },
+  emailToken: { type: String }, // when user register 
 })
 
 export default mongoose.models.User || mongoose.model("User", userSchema)

@@ -1,3 +1,8 @@
+
+
+
+
+
 import * as React from "react"
 // ⚡⚡⚡
 import Avatar from "@mui/material/Avatar"
@@ -31,7 +36,7 @@ export default function Register() {
     const router = useRouter()
   
     const { data: session } = useSession()
-    console.log(session.user, "session in register PAGE")  // well show current user information
+    console.log(session?.user, "session in register PAGE")  // well show current user information
 
   
     const cookies = parseCookies
@@ -46,7 +51,8 @@ export default function Register() {
       }
   
       if (cookies?.user) {
-        router.push("/")
+          console.log("cookies in register page", cookies)
+      //  router.push("/")
       }
     }, [router])
 

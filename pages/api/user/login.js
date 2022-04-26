@@ -1,11 +1,60 @@
-import React from 'react'
+import connectDB from "../../../util/connectDb"
 
-export default function Login() {
-  return (
-    <div>
 
-<h1>Login page</h1>
+import User from "../../../userModel"
+import bcrypt from "bcryptjs"
+import jwt from "jsonwebtoken"
 
-    </div>
-  )
+connectDB()
+export const config = {
+api: {
+  bodyParser: true,
+  externalResolver: true,
+},
+};
+
+
+export default async (req, res) => {
+  const { email, password } = req.body
+  
+
+  console.log(email, password)
+
+  // console.log(req.body)
+  try {
+    if (req.method === "POST") {
+      if (!email || !password) {
+        return res.status(422).json({ error: "please ass all the fields" })
+      }
+      const user = await User.findOne({ email })
+      console.log('useer in login api --->',user)
+      if (!user) {
+        return res.status(404).json({ error: "Invalid credentials" })
+      }
+      const doMatch = await bcrypt.compare(password, user.password)
+      if (doMatch) {
+        const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+          expiresIn: "7d",
+        })
+
+         console.log('token',token)
+
+        if (!doMatch) {
+          return res.status(401).json({ error: "Invalid credentials" })
+        }
+
+        const { email, _id, name } = user
+
+        res.status(201).json({
+          token,
+          user: { email, _id, name },
+          message: "login successful",
+        })
+      }
+    } else {
+      return res.status(401).json({ error: "Invalid credentials" })
+    }
+  } catch (err) {
+    console.log(err)
+  }
 }

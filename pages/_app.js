@@ -3,22 +3,38 @@ import { SessionProvider } from 'next-auth/react'
 import React from 'react'
 import { Head } from 'next/document';
 import { Provider } from 'next-auth/react'
+import Layout from "../components/Layout"
+import { ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+import theme from "../theme"
+import { wrapper } from "../redux/store"
+import { ThemeProvider, createTheme } from "@mui/material/styles"
 
-export default function App({ Component, pageProps: { session, ...pageProps }  }) {
+function App({ Component, pageProps: { session, ...pageProps }  }) {
 	return (
 
 	
-		
+		<ThemeProvider theme={theme}>
 		<SessionProvider session={session}>
-			<div>
+
+<Layout>
+            <ToastContainer />
+		
 				
 		
 		  <Component {...pageProps} />
 
-		  </div>
+		 
+		
+          
+			</Layout>
 		</SessionProvider>
+		</ThemeProvider>
 	
 	)
   }
 
+
+
+  export default wrapper.withRedux(App)
 

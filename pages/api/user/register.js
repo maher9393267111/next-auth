@@ -6,7 +6,12 @@ import jwt from "jsonwebtoken"
 import  absoluteUrl from "next-absolute-url"
 
 connectDB()
-
+export const config = {
+  api: {
+    bodyParser: true,
+    externalResolver: true,
+  },
+  };
 
 
 export default async (req, res) => {
@@ -48,11 +53,11 @@ export default async (req, res) => {
   
         // console.log("here")
   
-        // await sendEmail({
-        //   to: newUser.email,
-        //   subject: "Password Reset",
-        //   text: message,
-        // })
+        await sendEmail({
+          to: newUser.email,
+          subject: "Password Reset",
+          text: message,
+        })
   
         return res.status(200).json({
           message: `Email sent to ${newUser.email}, please check your email`,

@@ -6,7 +6,7 @@ sgmail.setApiKey(proces.env.SENDGRID_API_KEY)
  export const userWelcomemail=(email,name,message)=>{
 
 
-    
+
     try{
 
 
@@ -14,7 +14,7 @@ sgmail.setApiKey(proces.env.SENDGRID_API_KEY)
             to:email,
          //   to:'maher9911133@gmail.com',
             from:'gomemahero@gmail.com',  // this is sendgrid account gmail  ---> send t onother email account
-            subject:'reset password from here', 
+            subject:'reset passwordd from here', 
             text:message
         })
         console.log('email sent')

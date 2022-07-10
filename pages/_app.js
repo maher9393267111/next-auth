@@ -1,7 +1,7 @@
 import '../styles/globals.css'
 import { SessionProvider } from 'next-auth/react'
 import React from 'react'
-import { Head } from 'next/document';
+//import { Head } from 'next/document';
 import { Provider } from 'next-auth/react'
 import Layout from "../components/Layout"
 import { ToastContainer } from "react-toastify"
